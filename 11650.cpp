@@ -3,69 +3,144 @@
 
 using namespace std;
 
-int swap(int*a, int*b, int i, int j);
+int mergeSort(int**arr, int i, int j, int idx);
 
 int main(){
 	int input;
 	scanf("%d", &input);
 	
-	int*arrx = new int[input+1];
-	int*arry = new int[input+1];
-	
+	int**arr = new int*[input];
 	for(int i=0; i<input; i++){
-		scanf("%d %d", &arrx[i], &arry[i]);
+		arr[i] = new int[2];
+		scanf("%d %d", &arr[i][0], &arr[i][1]);
 	}
+
+	mergeSort(arr, 0, input, 0);
 	
+	int idx = 1;
 	for(int i=0; i<input-1; i++){
-		for(int j=i+1; j<input; j++){
-			if(arrx[i]>arrx[j]){
-				swap(arrx, arry, i, j);
-			}
-		}
-	}
-	
-	for(int i=0; i<input-1; i++){
-		if(arrx[i]==arrx[i+1]){
-			int tmp = i;
-			
-			while(1){
-				if(arrx[tmp]!=arrx[i]){
-					break;
-				}else if(tmp==input-1){
-					break;
+		if(arr[i][0]==arr[i+1][0]){
+			idx++;
+			int j = i+1;
+			while(j<input-1){
+				if(arr[j]==arr[j+1]){
+					j++;
+					idx++;
 				}else{
-					tmp++;
+					break;
 				}
 			}
-			
-			for(int j=i; j<tmp; j++){
-				for(int k=j+1; k<=tmp ; k++){
-					if(arry[j]>arry[k]){
-						swap(arrx, arry, j, k);
-					}
-				}
-			}
-			
+			mergeSort(arr, i, i+idx, 1);
+			i=j+1;
+			idx=1;
 		}
 	}
 	
-	
+	for(int i=0; i<input; i++){
+		printf("%d %d", arr[i][0], arr[i][1]);
+		
+		if(i!=input-1){
+			printf("\n");
+		}
+	}
 	
 	for(int i=0; i<input; i++){
-		printf("%d %d\n", arrx[i], arry[i]);
+		delete[] arr[i];
 	}
-		
-	delete[] arrx, arry;
+	delete[] arr;
 	return 0;
 }
 
-int swap(int*a, int*b, int i, int j){
-	int tmpx = a[i];
-	int tmpy = b[i];
-	a[i] = a[j];
-	b[i] = b[j];
-	a[j] = tmpx;
-	b[j] = tmpy;
+
+int mergeSort(int**arr, int i, int j, int idx){
+	static int def;
+	if(j-i<=1){
+			def ++;
+		cout<<"----------\n"<<def<<"\n----------\n";
+		return 0;
+	}
+	int half = (j-i)/2;
+	
+	int**arrl = new int*[half];
+	for(int k=0; k<half; k++){
+		arrl[k] = new int[2];
+		arrl[k] = arr[k+i];
+		printf("\ntest\n%d\ntest\n", arrl[k][0]);
+	}
+
+	int**arrr = new int*[(j-i)-half];
+	for(int k=0; k<(j-i)-half; k++){
+		arrr[k] = new int[2];
+		arrr[k] = arr[k+i+half];
+	}
+	
+
+
+	mergeSort(arrl, 0, half, idx);
+	mergeSort(arrr, 0, (j-i)-half, idx);
+	
+	
+	int idxl = 0;
+	int idxr = 0;
+	int idxm = i;
+	
+	while(idxm!=j){
+		if(idx==0){		
+			if(idxl != half&&idxr != (j-i)-half){
+				if(arrl[idxl][0]<arrr[idxr][0]){
+					arr[idxm] = arrl[idxl];
+					idxl++;
+				}else{
+					arr[idxm] = arrr[idxr];
+					idxr++;
+				}
+			}
+			if(idxl == half){
+				arr[idxm] = arrr[idxr];
+				idxr++;
+			}
+			if(idxr == (j-i)-half){
+				arr[idxm] == arrl[idxl];
+				idxl++;
+			}
+		}else{
+			if(idxl != half&&idxr != (j-i)-half){
+				if(arrl[idxl][1]<arrr[idxr][1]){
+					arr[idxm] = arrl[idxl];
+					idxl++;
+				}else{
+					arr[idxm] = arrr[idxr];
+					idxr++;
+				}
+			}else if(idxl == half){
+				arr[idxm] = arrr[idxr];
+				idxr++;
+			}else if(idxr == (j-i)-half){
+				arr[idxm] == arrl[idxl];
+				idxl++;
+			}else{
+			}
+		}
+		printf("\n//////////\nidxm : %d=>%d %d\n///////////\n",idxm, arr[idxm][0],arr[idxm][1]);
+		idxm++;
+	}
+	
+	for(int k=0; k<half; k++){
+		delete[] arrl[k];
+	}
+	
+	for(int k=0; k<(j-i)-half; k++){
+		delete[] arrr[k];
+	}
+	
+	delete[] arrl;
+	delete[] arrr;
+
+
+	def ++;
+	cout<<"-----qq-----\n"<<def<<"\n-----qq-----\n";
+	
 	
 	return 0;
+	
 }
