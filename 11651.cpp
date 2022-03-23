@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void mergeSort(int**arr, int i, int j, int idx);
+int mergeSort(int**arr, int i, int j, int idx);
 
 int main(){
 	int input;
@@ -14,20 +14,20 @@ int main(){
 		scanf("%d %d", &arr[i][0], &arr[i][1]);
 	}
 
-	mergeSort(arr, 0, input, 0);
+	mergeSort(arr, 0, input, 1);
 	
 	int idx = 1;
 	for(int i=0; i<input-1; i++){
 		int j=i+1;
 		while(j<input){
-			if(arr[i][0]==arr[j][0]){
+			if(arr[i][1]==arr[j][1]){
 				idx++;
 				j++;
 			}else{
 				break;
 			}
 		}
-		mergeSort(arr,i, i+idx, 1);
+		mergeSort(arr,i, i+idx, 0);
 		i=j-1;
 		idx=1;
 	}
@@ -44,10 +44,10 @@ int main(){
 }
 
 
-void mergeSort(int**arr, int i, int j, int idx){
+int mergeSort(int**arr, int i, int j, int idx){
 
 	if(j-i<=1){
-		return;
+		return 0;
 	}
 	int half = (j-i)/2;
 
@@ -107,5 +107,5 @@ void mergeSort(int**arr, int i, int j, int idx){
 	}
 	
 	
-	return;	
+	return 0;	
 }
