@@ -3,29 +3,27 @@
 
 using namespace std;
 
-int hanoi(int b, int r, int n, int t);
+void hanoi(int b, int a, int n);
 
 int main(){
 	int input;
-	scanf("%d", &input);
-	printf("%d\n", pow(2, n)-1)
-	if(n%2==1){
-		hanori(3, 1, pow(2, n)-1);
+	cin>>input;
+	if(input%2==1){
+		hanoi(1, 3, input);
 	}else{
-		hanoi(2, 1, pow(2, n)-1);
+		hanoi(1, 2, input);
 	}
+	
+	
 	return 0;
 }
 
-int hanoi(int b, int r, int n, int t){
+void hanoi(){
 	if(n==0){
-		return 0;
+		return;
 	}
-	static int k;
-	printf("%d %d",r,b);
-	if(n!=1){
-		printf("\n");
-	}
+	cout<<b<<' '<<a<<endl;
+	n-=1;
 	
-	t++;
+	
 }
